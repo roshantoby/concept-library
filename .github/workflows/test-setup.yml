@@ -1,8 +1,7 @@
 name: Test Setup
 
 on:
-  push:
-    branches: ["artur-jobs-experiment"]
+  workflow_call:
 
 jobs:
   setup:
