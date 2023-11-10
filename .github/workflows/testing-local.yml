@@ -13,10 +13,6 @@ jobs:
     needs: test-setup
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/download-artifact@v3
-      with:
-        name: test-setup
-        path: CodeListLibrary_project
 
     - name: Start application
       run: |

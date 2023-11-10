@@ -47,8 +47,3 @@ jobs:
 
     - name: Prepare Selenium
       uses: nanasess/setup-chromedriver@v2
-
-
-    - name: Export environment variables
-      run: |
-        echo "TEST_SETUP_COMPLETE=true" >> $GITHUB_ENV
