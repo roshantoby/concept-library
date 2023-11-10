@@ -48,11 +48,6 @@ jobs:
     - name: Prepare Selenium
       uses: nanasess/setup-chromedriver@v2
 
-    - name: Start application in the background
-      run: |
-        export $(grep -v '^#' docker/selenium-testing/env/remotetest.compose.env | xargs)
-        cd CodeListLibrary_project
-        python manage.py runserver 0.0.0.0:8000 &
 
     - name: Export environment variables
       run: |
