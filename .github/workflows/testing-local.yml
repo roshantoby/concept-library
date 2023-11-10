@@ -1,12 +1,10 @@
 name: Integration-test
 
 on:
-  workflow_call:
-    inputs:
-      test-setup-complete:
-        required: true
-    from:
-      - test-setup
+  push:
+    branches: ["artur-jobs-experiment"]
+  pull_request:
+    branches: ["test-master"]
 
 jobs:
   test-setup:
