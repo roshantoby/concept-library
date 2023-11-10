@@ -1,27 +1,41 @@
-name: Run Tests
+name: Integration-test
 
 on:
-  workflow_dispatch:
+  push:
+    branches: ["artur-jobs-experiment"]
+  pull_request:
+    branches: ["test-master"]
 
 jobs:
-  run-tests:
+  test-setup:
+    uses: ./.github/workflows/test-setup.yml
+  test-execution:
+    needs: test-setup
     runs-on: ubuntu-latest
-    needs: setup
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - uses: actions/download-artifact@v3
+      with:
+        name: test-setup
+        path: CodeListLibrary_project
 
-      - name: Run tests
-        run: |
-          export $(grep -v '^#' docker/selenium-testing/env/remotetest.compose.env | xargs)
-          cd CodeListLibrary
-          pytest -v -s --cov-report xml --cov . --html=report.html --self-contained-html -k ""
-        env:
-          DISPLAY: ":99"
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: CodeListLibrary_project/report.html
-          retention-days: 5
+    - name: Start application
+      run: |
+        export $(grep -v '^#' docker/selenium-testing/env/remotetest.compose.env | xargs)
+        cd CodeListLibrary_project
+        python manage.py makemigrations
+        python manage.py migrate
+        python manage.py runserver 0.0.0.0:8000 > /dev/null &
+    - name: Run tests
+      run: |
+        export $(grep -v '^#' docker/selenium-testing/env/remotetest.compose.env | xargs)
+        export TEST_SETUP_COMPLETE=$TEST_SETUP_COMPLETE
+        cd CodeListLibrary_project
+        pytest -v -s --cov-report xml --cov . --html=report.html --self-contained-html -k ""
+          env:
+            DISPLAY: ":99"
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: CodeListLibrary_project/report.html
+        retention-days: 5
