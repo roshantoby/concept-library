@@ -1,4 +1,4 @@
-name: Generate Docs Test
+name: Generate Docs Update
 
 on:
   push:
