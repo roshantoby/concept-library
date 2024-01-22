@@ -64,10 +64,12 @@ jobs:
               git commit -m "Update documentation and Allure reports"
 
 
-      - name: Push to destination branch
-        uses: ad-m/github-push-action@master
-        with: 
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            branch: github-pages
-            force: true
 
+      - name: Deploy report to gh-pages branch
+        if: (success() || failure()) && github.event_name != 'pull_request'
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: github-pages
+          PUBLISH_DIR: docs
+          keep_files: true
