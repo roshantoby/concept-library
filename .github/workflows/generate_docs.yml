@@ -39,22 +39,19 @@ jobs:
         run: |
               cd docs/codebase_docs/ 
               sphinx-apidoc -o source ../../CodeListLibrary_project
-              sphinx-build -b html source ../gh-pages/docs/
+              sphinx-build -b html source ..
 
       - name: Copy Documentation
         run: |
           cd docs/codebase_docs/ 
           dir
-          mkdir -p gh-pages
-          dir
-          cp -r /*.html gh-pages
-          cd .. 
+          mkdir -p 
           rm -r assets
           rm -r sql-scripts
           rm -r codebase_docs
           cd ..
           rm -r docker
-          rm -r CodeListLibrary_project          
+          rm -r CodeListLibrary_project   
 
       - name: Init new codebase docs repo
         run: |
