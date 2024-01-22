@@ -8,7 +8,7 @@ jobs:
   build_docs_job:
     name: Code Reference Generator
     runs-on:
-      labels: [self-hosted, linux, x64]
+      labels: [linux, x64]
 
     env: 
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
