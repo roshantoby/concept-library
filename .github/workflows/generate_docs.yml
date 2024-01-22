@@ -46,9 +46,6 @@ jobs:
           dir 
           rm -r docker
           rm -r CodeListLibrary_project  
-          rm .github
-          rm LICENSE
-          rm README.md
           cd docs 
           rm .doctrees
           rm _modules
