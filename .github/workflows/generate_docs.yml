@@ -45,7 +45,21 @@ jobs:
         run: |
           dir 
           rm -r docker
-          rm -r CodeListLibrary_project   
+          rm -r CodeListLibrary_project  
+          rm .github
+          rm LICENSE
+          rm README.md
+          cd docs 
+          rm .doctrees
+          rm _modules
+          rm _sources
+          rm _static 
+          rm assets
+          rm codebase_docs
+          rm sql-scripts
+          rm unit-testing
+          rm .buildinfo
+          rm Application Guide.docx
 
       - name: Init new codebase docs repo
         run: |
