@@ -47,7 +47,6 @@ jobs:
           rm -r docker
           rm -r CodeListLibrary_project  
           cd docs 
-          rm .doctrees
           rm _modules
           rm _sources
           rm _static 
@@ -55,7 +54,6 @@ jobs:
           rm codebase_docs
           rm sql-scripts
           rm unit-testing
-          rm .buildinfo
           rm Application Guide.docx
 
       - name: Init new codebase docs repo
