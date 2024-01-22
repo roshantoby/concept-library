@@ -47,14 +47,14 @@ jobs:
           rm -r docker
           rm -r CodeListLibrary_project  
           cd docs 
-          rm _modules
-          rm _sources
-          rm _static 
-          rm assets
-          rm codebase_docs
-          rm sql-scripts
-          rm unit-testing
-          rm Application Guide.docx
+          rm -r _modules
+          rm -r _sources
+          rm -r _static 
+          rm -r assets
+          rm -r codebase_docs
+          rm -r sql-scripts
+          rm -r unit-testing
+          rm -r Application Guide.docx
 
       - name: Init new codebase docs repo
         run: |
