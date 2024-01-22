@@ -44,10 +44,6 @@ jobs:
       - name: Copy Documentation
         run: |
           dir 
-          rm -r assets
-          rm -r sql-scripts
-          rm -r codebase_docs
-          cd ..
           rm -r docker
           rm -r CodeListLibrary_project   
 
