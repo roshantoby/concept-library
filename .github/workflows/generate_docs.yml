@@ -32,7 +32,6 @@ jobs:
               sudo apt-get install -y -q libsasl2-dev libldap2-dev libssl-dev libpq-dev
               cd docker 
               cd requirements
-              pip install sphinxjp
               pip install -r base.txt
 
 
