@@ -43,9 +43,7 @@ jobs:
 
       - name: Copy Documentation
         run: |
-          cd docs/codebase_docs/ 
-          dir
-          mkdir -p docs
+          dir 
           rm -r assets
           rm -r sql-scripts
           rm -r codebase_docs
