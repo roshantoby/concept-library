@@ -45,7 +45,7 @@ jobs:
 
       - name: Copy Documentation
         run: |
-          dir 
+          ls -l 
           rm -r docker
           rm -r CodeListLibrary_project  
           cd docs 
