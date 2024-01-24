@@ -55,8 +55,9 @@ jobs:
           rm -r sql-scripts
           rm -r unit-testing
           rm -r .doctrees
+          rm -r .buildinfo
           mkdir docs
-          find . -name '*.html' -not -name 'index.html' -exec cp {} ./docs \;
+          find . -name '*.html' -not \( -name 'index.html' -o -name '*allure*.html' \) -exec mv {} ./docs \;
 
 
       - name: Init new codebase docs repo
