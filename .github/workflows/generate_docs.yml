@@ -41,21 +41,6 @@ jobs:
               sphinx-apidoc -o source ../../CodeListLibrary_project
               sphinx-build -b html source ..
 
-      - name: Copy Documentation
-        run: |
-          ls -l 
-          rm -r docker
-          rm -r CodeListLibrary_project  
-          cd docs           
-          rm -r _modules
-          rm -r _sources
-          rm -r _static 
-          rm -r assets
-          rm -r codebase_docs
-          rm -r sql-scripts
-          rm -r unit-testing
-
-          find . -name '*.html' -not -name 'index.html' -exec cp {} ./docs \;
 
 
       - name: Init new codebase docs repo
