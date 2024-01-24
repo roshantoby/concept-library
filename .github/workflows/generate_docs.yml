@@ -62,6 +62,7 @@ jobs:
 
       - name: Init new codebase docs repo
         run: |
+              git config pull.rebase true 
               git pull origin github-pages
               touch .nojekyll
               git add -A
