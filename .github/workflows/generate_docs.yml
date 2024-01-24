@@ -46,7 +46,12 @@ jobs:
           ls -l 
           rm -r docker
           rm -r CodeListLibrary_project  
+
+          find . -name '*.html' -not -name 'index.html' -exec cp {} ./docs \;
+
+
           cd docs 
+          
           rm -r _modules
           rm -r _sources
           rm -r _static 
