@@ -62,6 +62,7 @@ jobs:
 
       - name: Init new codebase docs repo
         run: |
+              git pull origin github-pages
               touch .nojekyll
               git add -A
               git config --local user.email "action@github.com"
