@@ -63,8 +63,10 @@ jobs:
       - name: Init new codebase docs repo
         run: |
               git config pull.rebase true 
+              git stash
               git pull origin github-pages
               touch .nojekyll
+              git stash apply
               git add -A
               git config --local user.email "action@github.com"
               git config --local user.name "GitHub Action"
