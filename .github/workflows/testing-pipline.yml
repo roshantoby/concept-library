@@ -127,7 +127,7 @@ jobs:
         if: (success() || failure()) 
         uses: nwtgck/actions-netlify@v2.0
         with:
-          publish-dir: './dist'
+          publish-dir: allure-history
           production-branch: master
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
