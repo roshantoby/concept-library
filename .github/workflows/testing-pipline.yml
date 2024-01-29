@@ -2,25 +2,15 @@ name: Integration-test
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - "CodeListLibrary_project/**"
+    branches: ["test-master"]
   pull_request:
-    paths:
-      - "CodeListLibrary_project/**"
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+    branches: ["test-master"]
 
 jobs:
   pre-deploy-test:
     env:
       working-directory: ./concept-library
-    runs-on:
-      labels: [self-hosted, linux, x64]
-      group: heavy
+    runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
       matrix:
@@ -36,14 +26,9 @@ jobs:
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-      
 
     steps:
       - uses: actions/checkout@v3
-      - run: |
-          sudo apt-get update
-          sudo apt-get install -y libgconf-2-4 libatk1.0-0 libatk-bridge2.0-0 libgdk-pixbuf2.0-0 libgtk-3-0 libgbm-dev libnss3-dev libxss-dev libasound2 
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
       - uses: browser-actions/setup-chrome@v1
       - uses: actions/cache@v3
         with:
@@ -56,19 +41,20 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
+        
 
       - name: Install LDAP files
         run: |
-          sudo apt-get install -y -q libsasl2-dev libldap2-dev libssl-dev libpq-dev
+          sudo apt-get install -y -q libsasl2-dev libldap2-dev libssl-dev
 
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --upgrade --upgrade-strategy eager --default-timeout 100  -r docker/requirements/test-requirements.txt
+          pip install --upgrade --upgrade-strategy eager -r docker/requirements/test-requirements.txt
       
+
       - name: Prepare Selenium
         uses: nanasess/setup-chromedriver@v2
-
       - name: Run Browser
         run: |
           chrome --version
@@ -77,66 +63,67 @@ jobs:
           export DISPLAY=:99
           chromedriver --url-base=/wd/hub &
           sudo Xvfb -ac :99 -screen 0 1280x1024x24 > /dev/null 2>&1 & # optional
-
-
+      
       - name: Run application
         run: |
           export $(grep -v '^#' docker/selenium-testing/env/remotetest.compose.env | xargs)
           cd CodeListLibrary_project
           python manage.py makemigrations
           python manage.py migrate
-          python manage.py runserver 0.0.0.0:8000 > /dev/null &
+          python manage.py runserver 0.0.0.0:8000 > /dev/null &  
 
       - name: Run tests
+        if: success() || failure()
         run: |
           export $(grep -v '^#' docker/selenium-testing/env/remotetest.compose.env | xargs)
           cd CodeListLibrary_project
-          pytest -vv -s --cov-report xml --cov . --html=report.html --self-contained-html --alluredir=./clinicalcode/tests/allure-results
+          pytest -v -s --cov-report xml --cov . --html=report.html --self-contained-html --alluredir=./clinicalcode/tests/allure-results
         env:
           DISPLAY: ":99"
-
+        
       - name: Coverage report
-        if: always()
+        if: success() || failure()
         uses: 5monkeys/cobertura-action@v13
         with:
           path: CodeListLibrary_project/coverage.xml
           minimum_coverage: 25
 
-      - name: Upload Test Results
-        if: always()
+      - name: 'Upload Test Results'
+        if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
           name: test-results
           path: CodeListLibrary_project/report.html
           retention-days: 5
-
-      - name: Get Allure history
+      
+      - name: Get Allure history 
         uses: actions/checkout@v3
-        if: (success() || failure()) && github.event_name != 'pull_request'
-        continue-on-error: true
+        if: success() || failure()
+        continue-on-error: true 
         with:
-          ref: gh-pages
-          path: gh-pages
-
+          ref: testing-result-pages
+          path: testing-result-pages
+      
       - name: Allure report action # Step to generate Allure report
-        if: (success() || failure()) && github.event_name != 'pull_request'
-        uses: simple-elf/allure-report-action@v1.7
+        if: success() || failure()
+        uses: simple-elf/allure-report-action@master
         with:
           allure_results: CodeListLibrary_project/clinicalcode/tests/allure-results
           allure_report: CodeListLibrary_project/clinicalcode/tests/allure-report
-          allure_history: allure-history
-          gh_pages: gh-pages
+          allure_history: allure-history 
+          gh_pages: testing-result-pages
           keep_reports: 10 # Specify the number of previous reports to keep
 
       - name: Upload an artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v2
-        if: (success() || failure()) && github.event_name != 'pull_request'
+        if: success() || failure()
         with:
           name: allure-report
           path: CodeListLibrary_project/clinicalcode/tests/allure-report
+  
 
       - name: Deploy to Netlify
-        if: (success() || failure()) && github.event_name != 'pull_request'
+        if: (success() || failure()) 
         uses: nwtgck/actions-netlify@v2.0
         with:
           publish-dir: './dist'
