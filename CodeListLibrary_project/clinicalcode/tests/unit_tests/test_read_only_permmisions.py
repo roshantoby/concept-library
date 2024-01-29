@@ -25,14 +25,4 @@ class TestReadOnlyPermissions:
             None, generate_entity, generate_user[user_type]) == False
 
     def test_user_not_allowed_to_create(self):
-        assert allowed_to_create() == False
-    
-    def test_wrong_answer(self):
-        assert allowed_to_create() == True
-    
-    def test_wrong_again():
-        assert 1 == 2
-    
-
-
-        
+        assert allowed_to_create() is False
