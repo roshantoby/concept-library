@@ -112,7 +112,7 @@ jobs:
           allure_results: CodeListLibrary_project/clinicalcode/tests/allure-results
           allure_report: CodeListLibrary_project/clinicalcode/tests/allure-report
           allure_history: allure-history 
-          gh_pages: testing-result-pages
+          gh_pages: testing-result-pages # it is not github pages branch
           keep_reports: 10 # Specify the number of previous reports to keep
 
       - name: Upload an artifact for GitHub Pages
@@ -127,7 +127,7 @@ jobs:
         if: (success() || failure()) 
         uses: nwtgck/actions-netlify@v2.0
         with:
-          publish-dir: allure-history
+          publish-dir: allure-report
           production-branch: master
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
@@ -137,3 +137,12 @@ jobs:
           NETLIFY_AUTH_TOKEN: nfp_se4DT28bsNY1k7Fc7UgYhUQF4Z5cZJWceaa4
           NETLIFY_SITE_ID: 56288579-1cf4-478f-bfe4-73a565df2f0c
         timeout-minutes: 1
+
+      - name: Deploy history to testing-result-pages branch
+        if: (success() || failure()) 
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: testing-result-pages
+          PUBLISH_DIR: allure-history
+      
