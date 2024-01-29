@@ -135,11 +135,17 @@ jobs:
           name: allure-report
           path: CodeListLibrary_project/clinicalcode/tests/allure-report
 
-      - name: Deploy report to gh-pages branch
+      - name: Deploy to Netlify
         if: (success() || failure()) && github.event_name != 'pull_request'
-        uses: peaceiris/actions-gh-pages@v2
+        uses: nwtgck/actions-netlify@v2.0
+        with:
+          publish-dir: './dist'
+          production-branch: master
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
         env:
-          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PUBLISH_BRANCH: gh-pages
-          PUBLISH_DIR: allure-history
-          keep_files: true
+          NETLIFY_AUTH_TOKEN: nfp_se4DT28bsNY1k7Fc7UgYhUQF4Z5cZJWceaa4
+          NETLIFY_SITE_ID: 56288579-1cf4-478f-bfe4-73a565df2f0c
+        timeout-minutes: 1
