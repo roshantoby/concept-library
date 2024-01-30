@@ -132,6 +132,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           deploy-message: "Deploy from GitHub Actions"
           enable-pull-request-comment: false
+          enable-github-deployment: false
           enable-commit-comment: true
         env:
           NETLIFY_AUTH_TOKEN: nfp_se4DT28bsNY1k7Fc7UgYhUQF4Z5cZJWceaa4
