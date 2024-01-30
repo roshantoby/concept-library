@@ -113,7 +113,8 @@ jobs:
           allure_report: CodeListLibrary_project/clinicalcode/tests/allure-report
           allure_history: allure-history 
           gh_pages: testing-result-pages # it is not github pages branch
-          keep_reports: 10 # Specify the number of previous reports to keep
+          report_url: https://meek-florentine-a03d43.netlify.app
+          keep_reports: 15 # Specify the number of previous reports to keep
 
       - name: Upload an artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v2
@@ -121,23 +122,17 @@ jobs:
         with:
           name: allure-report
           path: CodeListLibrary_project/clinicalcode/tests/allure-report
-  
 
-      - name: Deploy to Netlify
-        if: (success() || failure()) 
-        uses: nwtgck/actions-netlify@v2.0
+      - name: Publish to Netlify
+        uses: netlify/actions/cli@master
+        if: success() || failure()
         with:
-          publish-dir: allure-history
-          production-branch: master
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy from GitHub Actions"
-          enable-pull-request-comment: false
-          enable-github-deployment: false
-          enable-commit-comment: true
+          args: deploy --dir=allure-history --prod --functions=functions
         env:
+          NETLIFY_SITE_ID:  56288579-1cf4-478f-bfe4-73a565df2f0c
           NETLIFY_AUTH_TOKEN: nfp_se4DT28bsNY1k7Fc7UgYhUQF4Z5cZJWceaa4
-          NETLIFY_SITE_ID: 56288579-1cf4-478f-bfe4-73a565df2f0c
         timeout-minutes: 1
+  
 
       - name: Deploy history to testing-result-pages branch
         if: (success() || failure()) 
