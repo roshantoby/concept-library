@@ -112,7 +112,6 @@ jobs:
           allure_results: CodeListLibrary_project/clinicalcode/tests/allure-results
           allure_report: CodeListLibrary_project/clinicalcode/tests/allure-report
           allure_history: allure-history 
-          gh_pages: testing-result-pages # it is not github pages branch
           report_url: https://meek-florentine-a03d43.netlify.app
           keep_reports: 15 # Specify the number of previous reports to keep
 
@@ -141,5 +140,4 @@ jobs:
           PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLISH_BRANCH: testing-result-pages
           PUBLISH_DIR: allure-history
-          keep_files: true
       
