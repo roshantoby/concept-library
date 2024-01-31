@@ -28,6 +28,3 @@ class TestSearchFilters:
             assert checkbox.is_enabled() is True
 
         logout(self.driver)
-    
-    def test_fail():
-        assert 1 == 2
