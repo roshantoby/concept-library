@@ -210,7 +210,7 @@ class SearchTest(StaticLiveServerTestCase):
                 (By.CSS_SELECTOR, 'p.navbar-text'), username))
     
     def test_loh(self):
-        assert 1 == 2
+        self.assertEqual(1,2)
 
     def test_tags_filter(self):
 
