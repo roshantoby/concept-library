@@ -209,9 +209,6 @@ class SearchTest(StaticLiveServerTestCase):
             EC.text_to_be_present_in_element(
                 (By.CSS_SELECTOR, 'p.navbar-text'), username))
     
-    def test_loh(self):
-        self.assertEqual(1,2)
-
     def test_tags_filter(self):
 
         self.login(su_user, su_password)
